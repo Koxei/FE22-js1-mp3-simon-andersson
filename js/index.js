@@ -16,6 +16,16 @@ function removeChild(){
     }
 }
 
+// Error handling if Language not found
+function err(err){
+    if (err == 0) {
+        alert("Search field cannot be left empty")
+    }
+    if (data.status == 404) {
+        alert(`Please enter a valid language`)
+    }
+}
+
 // function to loop over fetched data
 function loopLang(data){
     for (let i = 0; i < data.length; i++) {
@@ -84,16 +94,12 @@ search.addEventListener('keypress',function(e){
         .then(res => res.json())
         .then(data => {
             loopLang(data);
-            if (lang == 0) {
-                alert("Search field cannot be left empty")
-            }
-            if (data.status == 404) {
-                alert(`Please enter a valid language`)
-            }
             })
-       
+        .catch(err(data)) 
   }
 });
+
+
 
 
 
