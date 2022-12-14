@@ -86,9 +86,7 @@ search.addEventListener('keypress',function(e){
                 return res.json();
             }
         })
-        .then(data => {
-            loopLang(data);
-            })
+        .then(loopLang)
         .catch(() => {
             alert("Please enter a valid language")
      }) 
