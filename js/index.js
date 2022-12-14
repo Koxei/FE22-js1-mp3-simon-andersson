@@ -16,15 +16,6 @@ function removeChild(){
     }
 }
 
-// Error handling if Language not found
-function err(err){
-    if (err == 0) {
-        alert("Search field cannot be left empty")
-    }
-    if (data.status == 404) {
-        alert(`Please enter a valid language`)
-    }
-}
 
 // function to loop over fetched data
 function loopLang(data){
@@ -65,37 +56,42 @@ function loopLang(data){
 
 // eventListener for clicking on button
 btn.addEventListener('click', (e) => {
-    e.preventDefault();
+    
     let lang = search.value;
     removeChild();
     fetch(`https://restcountries.com/v3.1/lang/${lang}`)
-    .then(res => res.json())
-    .then(data => {
-        loopLang(data);
-        if (lang == 0) {
-            alert("Search field cannot be left empty")
+    .then(res => {
+        if (res.status >= 200 && res.status < 300) {
+            return res.json();
         }
-        if (data.status == 404) {
-            alert(`Please enter a valid language`)
-        }
-        })
-   
-    // fetching(lang);
-
+    })
+    .then(loopLang)
+    .catch(() => {
+           alert("Please enter a valid language")
+    })
 })
 
+
+
 // eventListener for pressing Enter
+
 search.addEventListener('keypress',function(e){
     if (e.key === 'Enter') {
         e.preventDefault();
         let lang = search.value;
         removeChild();
         fetch(`https://restcountries.com/v3.1/lang/${lang}`)
-        .then(res => res.json())
+        .then(res => {
+            if (res.status >= 200 && res.status < 300) {
+                return res.json();
+            }
+        })
         .then(data => {
             loopLang(data);
             })
-        .catch(err(data)) 
+        .catch(() => {
+            alert("Please enter a valid language")
+     }) 
   }
 });
 
